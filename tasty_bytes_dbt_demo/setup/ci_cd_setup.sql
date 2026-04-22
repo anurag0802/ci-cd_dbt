@@ -12,7 +12,7 @@
 -- already exist. See the getting-started tutorial for details:
 -- https://docs.snowflake.com/en/user-guide/tutorials/dbt-projects-on-snowflake-getting-started-tutorial#run-the-sql-commands-in-tasty-bytes-setup-sql-to-set-up-source-data
 -- =============================================================================
-
+USE WAREHOUSE TASTY_BYTES_DBT_WH
 -- Option 1: Create an empty database with dev and prod schemas
 -- This is the simplest approach when you're starting from scratch.
 CREATE DATABASE IF NOT EXISTS tasty_bytes_dbt_db;
@@ -53,9 +53,10 @@ CREATE OR REPLACE USER github_actions_service_user
 -- to assume that role. The DEFAULT_ROLE parameter only sets the user's default role
 -- and doesn't grant it.
 GRANT ROLE ACCOUNTADMIN TO USER github_actions_service_user;
-
+GRANT USAGE ON WAREHOUSE TASTY_BYTES_DBT_WH TO ROLE ACCOUNTADMIN;
+GRANT OPERATE ON WAREHOUSE TASTY_BYTES_DBT_WH TO ROLE ACCOUNTADMIN;
 -- Set a default warehouse:
-ALTER USER github_actions_service_user SET DEFAULT_WAREHOUSE = 'tasty_bytes_dbt_wh';
+ALTER USER github_actions_service_user SET DEFAULT_WAREHOUSE = 'TASTY_BYTES_DBT_WH';
 
 -- Alternative: PAT-based authentication (less secure)
 -- If you prefer to use one Snowflake user across multiple repositories, or cannot use
@@ -111,3 +112,4 @@ ALTER USER GitHub_Actions_Service_User
 -- Add the new rule:
 -- ALTER NETWORK POLICY <name>
 --   ADD ALLOWED_NETWORK_RULE_LIST = ('SNOWFLAKE.NETWORK_SECURITY.GITHUBACTIONS_GLOBAL');
+DESC USER github_actions_service_user;
