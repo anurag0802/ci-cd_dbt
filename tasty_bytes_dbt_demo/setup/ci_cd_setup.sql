@@ -39,12 +39,12 @@ CREATE SCHEMA IF NOT EXISTS tasty_bytes_dbt_db.prod;
 
 -- Recommended: OIDC-based service user
 -- This approach uses OpenID Connect (OIDC) rather than long-lived credentials.
-CREATE USER IF NOT EXISTS github_actions_service_user
+CREATE OR REPLACE USER github_actions_service_user
   TYPE = SERVICE
   WORKLOAD_IDENTITY = (
     TYPE = OIDC
     ISSUER = 'https://token.actions.githubusercontent.com',
-    SUBJECT = 'repo:your_repo_org/your_dbt_repo:environment:prod'
+    SUBJECT = 'repo:anurag0802/ci-cd_dbt:environment:prod'
   )
   DEFAULT_ROLE = ACCOUNTADMIN
   COMMENT = 'Service user for GitHub Actions';
