@@ -1,0 +1,1 @@
+select * from {{ ref('raw_pos_menu') }}
