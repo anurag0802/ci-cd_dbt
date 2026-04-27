@@ -48,5 +48,5 @@ jobs:
  
       - name: Run dbt project in PROD
         run: |
-           snow dbt execute tasty_bytes_dbt_db.PROD.tasty_bytes_dbt_object_gh_action build --target prod -x
-      #   run: snow sql -f ${{ github.workspace }}/tasty_bytes/schedules.sql -x
+           snow dbt execute -x tasty_bytes_dbt_db.PROD.tasty_bytes_dbt_object_gh_action build --target prod -x
+      #   run: snow sql -f ${{ github.workspace }}/tasty_bytes/schedules.sql 
