@@ -45,8 +45,7 @@ jobs:
             --dbt-version 1.10.15 \
             --force \
             -x
-      - name: set default connection prod
-        run: snow connection set-default prod
+      
   
       - name: Run dbt project in PROD
         run: |
