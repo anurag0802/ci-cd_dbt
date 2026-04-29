@@ -1,0 +1,44 @@
+name: Manual Deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    environment: prod
+ 
+    env:
+      
+      
+ 
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }} 
+      SNOWFLAKE_CONNECTIONS_DEFAULT_DATABASE: ${{vars.SNOWFLAKE_CONNECTONS_DEFAULT_DATABASE}}
+      SNOWFLAKE_CONNECTIONS_DEFAULT_SCHEMA: ${{vars.SNOWFLAKE_CONNECTIONS_DEFAULT_schema}}
+ 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+ 
+      - name: Install Snowflake CLI
+        uses: snowflakedb/snowflake-cli-action@v2.0
+ 
+      - name: Check Snowflake CLI Version
+        run: snow --version
+ 
+      - name: Test Snowflake Connection
+        run: snow connection test -x
+ 
+      - name: Deploy dbt project object to PROD
+        run: |
+              snow dbt deploy tasty_bytes_dbt_db.PROD.tasty_bytes_dbt_object_gh_action \
+                 --source ./tasty_bytes_dbt_demo \
+                --default-target prod \
+                --dbt-version 1.10.15 \
+                   --force \
+                     -x
+ 
+      - name: Run dbt project in PROD
+        run: |
+           snow dbt execute -x tasty_bytes_dbt_db.PROD.tasty_bytes_dbt_object_gh_action build --target prod -x
